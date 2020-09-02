@@ -38,7 +38,7 @@ jobs:
       with:
         filename: .github/ISSUE_TEMPLATE_BUILD_FAILED.md
     - name: Build and push Docker images
-      if: ${{ github.ref == 'ref/head/master' }}
+      if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v1
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
