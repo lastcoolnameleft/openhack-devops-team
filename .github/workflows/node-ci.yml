@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         registry: openhackg8i5trw0acr.azurecr.io
         repository: devopsoh/api-userprofile
-        tag_with_sha: true
+        tags: ${{ github.sha }}
     - uses: azure/webapps-deploy@v2
       name: WebApp Deploy
       with:
