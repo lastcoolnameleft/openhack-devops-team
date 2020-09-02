@@ -47,3 +47,10 @@ jobs:
         registry: openhackg8i5trw0acr.azurecr.io
         repository: devopsoh/api-userprofile
         tag_with_sha: true
+    - uses: azure/webapps-deploy@v2
+      name: WebApp Deploy
+      with:
+        app-name: 'openhackg8i5trw0userprofile'
+        publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+        images: 'openhackg8i5trw0acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}'
+
