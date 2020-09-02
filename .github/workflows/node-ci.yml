@@ -41,6 +41,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v1
       with:
+        path: apis/userprofile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         registry: openhackg8i5trw0acr.azurecr.io
