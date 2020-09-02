@@ -47,3 +47,4 @@ jobs:
         registry: openhackg8i5trw0acr.azurecr.io
         repository: devopsoh/api-userprofile
         tag_with_ref: true
+        tag_with_sha: true
