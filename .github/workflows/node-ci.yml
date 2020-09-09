@@ -51,10 +51,18 @@ jobs:
         registry: ${{ env.registry }}
         repository: ${{ env.repository }}
         tags: ${{ github.sha }}
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        # Set this value to true to enable Azure PowerShell Login in addition to Az CLI login
+        enable-AzPSSession: true
+
     - uses: azure/webapps-deploy@v2
       name: WebApp Deploy
       with:
         app-name: 'openhackg8i5trw0userprofile'
-        publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+        publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_STAGING }}
         images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}'
         slot-name: staging
