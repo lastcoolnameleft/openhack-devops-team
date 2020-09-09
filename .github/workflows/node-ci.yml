@@ -65,5 +65,5 @@ jobs:
       with:
         app-name: 'openhackg8i5trw0userprofile'
         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_STAGING }}
-        images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}'
+        images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}
         slot-name: staging
