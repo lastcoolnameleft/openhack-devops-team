@@ -15,7 +15,7 @@ module.exports = {
     get: {
         200: function (req, res, callback) {
             res.json({
-                message: 'healthcheck5',
+                message: 'healthcheck6',
                 status: 'healthy'
             });
             callback;
