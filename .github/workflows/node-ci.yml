@@ -5,6 +5,8 @@ env:
   repository:  devopsoh/api-userprofile
   webapp_name: openhackg8i5trw0userprofile
   resource_group: openhackg8i5trw0rg
+  staging_url: https://openhackg8i5trw0userprofile-staging.azurewebsites.net/api/healthcheck/user
+  production_url: https://openhackg8i5trw0userprofile.azurewebsites.net/api/healthcheck/user
   
   
 defaults:
@@ -70,7 +72,7 @@ jobs:
     - name: curl
       uses: wei/curl@master
       with:
-        args: https://openhackg8i5trw0userprofile-staging.azurewebsites.net/api/healthcheck/user
+        args: ${{ env.staging_url }}
     - name: Azure CLI script
       uses: azure/CLI@v1
       with:
