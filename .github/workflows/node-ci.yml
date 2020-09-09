@@ -3,6 +3,8 @@ name: Node.js CI
 env:
   registry:  openhackg8i5trw0acr.azurecr.io
   repository:  devopsoh/api-userprofile
+  webapp_name: openhackg8i5trw0userprofile
+  resource_group: openhackg8i5trw0rg
   
   
 defaults:
@@ -52,13 +54,6 @@ jobs:
         registry: ${{ env.registry }}
         repository: ${{ env.repository }}
         tags: ${{ github.sha }}
-    - name: Azure Login
-      uses: Azure/login@v1
-      with:
-        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-        # Set this value to true to enable Azure PowerShell Login in addition to Az CLI login
-        enable-AzPSSession: true
 
     - uses: azure/webapps-deploy@v2
       name: WebApp Deploy
@@ -67,3 +62,17 @@ jobs:
         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_STAGING }}
         images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}
         slot-name: staging
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: curl
+      uses: wei/curl@master
+      with:
+        args: https://openhackg8i5trw0userprofile-staging.azurewebsites.net/api/healthcheck/user
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az webapp deployment slot swap --name ${{ env.webapp_name }} --resource-group ${{ env.resource_group }} --slot staging --target-slot production
