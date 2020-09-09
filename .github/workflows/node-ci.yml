@@ -48,13 +48,13 @@ jobs:
         path: apis/userprofile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        registry: $registry
-        repository: $repository
+        registry: ${{ env.registry }}
+        repository: ${{ env.repository }}
         tags: ${{ github.sha }}
     - uses: azure/webapps-deploy@v2
       name: WebApp Deploy
       with:
         app-name: 'openhackg8i5trw0userprofile'
         publish-profile: ${{ secrets.azureWebAppPublishProfile }}
-        images: $registry/$repository:${{ github.sha }}'
+        images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}'
         slot-name: staging
