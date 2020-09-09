@@ -1,5 +1,10 @@
 name: Node.js CI
 
+env:
+  registry:  openhackg8i5trw0acr.azurecr.io
+  repository:  devopsoh/api-userprofile
+  
+  
 defaults:
   run:
     shell: bash
@@ -12,7 +17,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -44,13 +48,13 @@ jobs:
         path: apis/userprofile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        registry: openhackg8i5trw0acr.azurecr.io
-        repository: devopsoh/api-userprofile
+        registry: $registry
+        repository: $repository
         tags: ${{ github.sha }}
     - uses: azure/webapps-deploy@v2
       name: WebApp Deploy
       with:
         app-name: 'openhackg8i5trw0userprofile'
         publish-profile: ${{ secrets.azureWebAppPublishProfile }}
-        images: 'openhackg8i5trw0acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}'
+        images: $registry/$repository:${{ github.sha }}'
 
