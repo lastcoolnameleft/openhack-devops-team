@@ -20,12 +20,12 @@ on:
     paths:
     - 'apis/userprofile/**'
     - '.github/workflows/node-ci.yml'
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [master]
-    paths:
-    - 'apis/userprofile/**'
-    - '.github/workflows/node-ci.yml'
+#  pull_request:
+#    # The branches below must be a subset of the branches above
+#    branches: [master]
+#    paths:
+#    - 'apis/userprofile/**'
+#    - '.github/workflows/node-ci.yml'
 
 jobs:
   build:
@@ -52,13 +52,13 @@ jobs:
         CI: true
 
     # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: javascript
+#    - name: Initialize CodeQL
+#      uses: github/codeql-action/init@v1
+#      with:
+#        languages: javascript
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+#    - name: Perform CodeQL Analysis
+#      uses: github/codeql-action/analyze@v1
 
     - name: My backup step
       if: ${{ failure() }}
