@@ -20,12 +20,12 @@ on:
     paths:
     - 'apis/userprofile/**'
     - '.github/workflows/node-ci.yml'
-#  pull_request:
-#    # The branches below must be a subset of the branches above
-#    branches: [master]
-#    paths:
-#    - 'apis/userprofile/**'
-#    - '.github/workflows/node-ci.yml'
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [master]
+    paths:
+    - 'apis/userprofile/**'
+    - '.github/workflows/node-ci.yml'
 
 jobs:
   build:
@@ -52,13 +52,13 @@ jobs:
         CI: true
 
     # Initializes the CodeQL tools for scanning.
-#    - name: Initialize CodeQL
-#      uses: github/codeql-action/init@v1
-#      with:
-#        languages: javascript
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript
 
-#    - name: Perform CodeQL Analysis
-#      uses: github/codeql-action/analyze@v1
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
 
     - name: My backup step
       if: ${{ failure() }}
@@ -80,6 +80,7 @@ jobs:
         tags: ${{ github.sha }}
 
     - uses: azure/webapps-deploy@v2
+      if: github.ref == 'refs/heads/master'
       name: WebApp Deploy
       with:
         app-name: 'openhackg8i5trw0userprofile'
@@ -87,23 +88,21 @@ jobs:
         images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}
         slot-name: staging
 
-    - name: Manual Approval
-      uses: toppulous/create-manual-approval-issue@v1
+    - name: curl
+      if: github.ref == 'refs/heads/master'
+      uses: wei/curl@master
       with:
-        label: manual-approval
+        args: ${{ env.staging_url }}
 
     - name: Azure Login
+      if: github.ref == 'refs/heads/master'
       uses: Azure/login@v1
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{secrets.AZURE_CREDENTIALS}}
 
-    - name: curl
-      uses: wei/curl@master
-      with:
-        args: ${{ env.staging_url }}
-
     - name: Azure CLI script
+      if: github.ref == 'refs/heads/master'
       uses: azure/CLI@v1
       with:
         inlineScript: |
