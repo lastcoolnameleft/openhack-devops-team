@@ -21,7 +21,7 @@ jobs:
   deploy-prod:
     if: contains(github.event.issue.labels.*.name, 'manual-approval')
     runs-on: ubuntu-latest
-
+    steps:
     - name: curl
       uses: wei/curl@master
       with:
