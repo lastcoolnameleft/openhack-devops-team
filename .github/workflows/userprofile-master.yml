@@ -19,7 +19,7 @@ on:
     branches: [master]
     paths:
     - 'apis/userprofile/**'
-    - '.github/workflows/node-ci.yml'
+    - '.github/workflows/userprofile-master.yml'
 
 jobs:
   build:
