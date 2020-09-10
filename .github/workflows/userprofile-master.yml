@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Userprofile Master
 
 env:
   registry:  openhackg8i5trw0acr.azurecr.io
@@ -16,12 +16,6 @@ defaults:
 
 on:
   push:
-    branches: [master]
-    paths:
-    - 'apis/userprofile/**'
-    - '.github/workflows/node-ci.yml'
-  pull_request:
-    # The branches below must be a subset of the branches above
     branches: [master]
     paths:
     - 'apis/userprofile/**'
@@ -69,7 +63,7 @@ jobs:
         filename: .github/ISSUE_TEMPLATE_BUILD_FAILED.md
 
     - name: Build and push Docker images
-      if: github.ref == 'refs/heads/master'
+#      if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v1
       with:
         path: apis/userprofile
@@ -80,7 +74,6 @@ jobs:
         tags: ${{ github.sha }}
 
     - uses: azure/webapps-deploy@v2
-      if: github.ref == 'refs/heads/master'
       name: WebApp Deploy
       with:
         app-name: 'openhackg8i5trw0userprofile'
@@ -89,20 +82,17 @@ jobs:
         slot-name: staging
 
     - name: curl
-      if: github.ref == 'refs/heads/master'
       uses: wei/curl@master
       with:
         args: ${{ env.staging_url }}
 
     - name: Azure Login
-      if: github.ref == 'refs/heads/master'
       uses: Azure/login@v1
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{secrets.AZURE_CREDENTIALS}}
 
     - name: Azure CLI script
-      if: github.ref == 'refs/heads/master'
       uses: azure/CLI@v1
       with:
         inlineScript: |
