@@ -87,6 +87,11 @@ jobs:
         images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}
         slot-name: staging
 
+    - name: Manual Approval
+      uses: toppulous/create-manual-approval-issue@v1
+      with:
+        label: manual-approval
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
