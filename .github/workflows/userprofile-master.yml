@@ -80,12 +80,9 @@ jobs:
         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_STAGING }}
         images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}
         slot-name: staging
-    - uses: JasonEtco/create-an-issue@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: toppulous/create-manual-approval-issue@v1 
       with:
-        filename: .github/ISSUE_TEMPLATE_MANUAL_APPROVAL.md
-
+        label: manual-approval
 
 #    - name: curl
 #      uses: wei/curl@master
