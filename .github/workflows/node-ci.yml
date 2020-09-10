@@ -16,6 +16,13 @@ defaults:
 
 on:
   push:
+    branches: [master]
+    paths:
+    - 'apis/userprofile/**'
+    - '.github/workflows/node-ci.yml'
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [master]
     paths:
     - 'apis/userprofile/**'
     - '.github/workflows/node-ci.yml'
@@ -30,15 +37,29 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
     - run: npm install
+
     - run: npm run build --if-present
+
     - run: npm test
       env:
         CI: true
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
     - name: My backup step
       if: ${{ failure() }}
       uses: JasonEtco/create-an-issue@v2
@@ -46,6 +67,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         filename: .github/ISSUE_TEMPLATE_BUILD_FAILED.md
+
     - name: Build and push Docker images
       if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v1
@@ -64,15 +86,18 @@ jobs:
         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_STAGING }}
         images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}
         slot-name: staging
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
         # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
         creds: ${{secrets.AZURE_CREDENTIALS}}
+
     - name: curl
       uses: wei/curl@master
       with:
         args: ${{ env.staging_url }}
+
     - name: Azure CLI script
       uses: azure/CLI@v1
       with:
