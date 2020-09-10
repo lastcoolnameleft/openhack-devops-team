@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Userprofile PR
 
 env:
   registry:  openhackg8i5trw0acr.azurecr.io
