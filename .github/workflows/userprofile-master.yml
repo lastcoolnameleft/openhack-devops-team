@@ -63,7 +63,6 @@ jobs:
         filename: .github/ISSUE_TEMPLATE_BUILD_FAILED.md
 
     - name: Build and push Docker images
-#      if: github.ref == 'refs/heads/master'
       uses: docker/build-push-action@v1
       with:
         path: apis/userprofile
@@ -76,27 +75,11 @@ jobs:
     - uses: azure/webapps-deploy@v2
       name: WebApp Deploy
       with:
-        app-name: 'openhackg8i5trw0userprofile'
+        app-name: ${{ env.webapp_name }}
         publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE_STAGING }}
         images: ${{ env.registry }}/${{ env.repository }}:${{ github.sha }}
         slot-name: staging
+
     - uses: toppulous/create-manual-approval-issue@v1 
       with:
         label: manual-approval
-
-#    - name: curl
-#      uses: wei/curl@master
-#      with:
-#        args: ${{ env.staging_url }}
-
-#    - name: Azure Login
-#      uses: Azure/login@v1
-#      with:
-#        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-#        creds: ${{secrets.AZURE_CREDENTIALS}}
-
-#    - name: Azure CLI script
-#      uses: azure/CLI@v1
-#      with:
-#        inlineScript: |
-#          az webapp deployment slot swap --name ${{ env.webapp_name }} --resource-group ${{ env.resource_group }} --slot staging --target-slot production
