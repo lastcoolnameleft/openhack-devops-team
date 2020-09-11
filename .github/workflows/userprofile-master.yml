@@ -77,6 +77,8 @@ jobs:
         node-version: [10.x]
 
     steps:
+    - uses: actions/checkout@v2
+
     - name: Build and push Docker images
       uses: docker/build-push-action@v1
       with:
